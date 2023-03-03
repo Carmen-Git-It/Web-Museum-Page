@@ -3,8 +3,10 @@ import {useRouter} from 'next/router';
 import useSWR from 'swr';
 import Error from 'next/error';
 import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Pagination from 'react-bootstrap/Pagination';
+import ArtworkCard from '../components/ArtworkCard';
 
 const PER_PAGE = 12;
 
@@ -15,15 +17,19 @@ export default function ArtworkIndex(){
     const router = useRouter();
     let finalQuery = router.asPath.split('?')[1];
 
-    const fetcher = (url) => fetch(url).then((res) => res.json());
-    const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/search?${finalQuery}`, fetcher);
+    //const fetcher = (url) => fetch(url).then((res) => res.json());
+    const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/search?${finalQuery}`);
 
     function previousPage(){
-        page > 1 ? page-- : null;
+        if (page > 1) {
+            setPage(page - 1);
+        }
     }
 
     function nextPage(){
-        page < artworkList.length ? page++ : null;
+        if (page < artworkList.length) {
+            setPage(page + 1);
+        }
     }
 
     useEffect(() => {
@@ -44,17 +50,17 @@ export default function ArtworkIndex(){
         );
     }
 
-    if (artworkList){
-        let pagination;
-        
+    if (artworkList && artworkList.length > 0){   
         let artworks = [];
         artworkList[page - 1].forEach((artwork) => {
             artworks.push(
-                <Col lg={3} key={artwork.objectID}>
-                    <ArtworkCard objectID={artwork.objectID}/>
+                <Col lg={3} eventKey={artwork} key={artwork}>
+                    <ArtworkCard objectID={Number(artwork)}/>
                 </Col>
             );
         });
+
+        console.log(artworks);
 
         return (
             <>
@@ -72,7 +78,9 @@ export default function ArtworkIndex(){
                 </Row>
             </>
         );
-    } else if (artworkList.length == 0) {
+    }  else if (!artworkList) {
+        return null;
+    }   else {
         return (
             <Card>
                 <Card.Body>
@@ -82,7 +90,5 @@ export default function ArtworkIndex(){
                 </Card.Body>
             </Card>
         );
-    } else {
-        return null;
     }
 }
