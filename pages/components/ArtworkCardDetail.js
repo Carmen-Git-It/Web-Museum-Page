@@ -1,8 +1,6 @@
 import useSWR from 'swr';
 import Error from 'next/error';
 import Card from 'react-bootstrap/Card';
-import Link from 'next/link';
-import Button from 'react-bootstrap/Button';
 
 export default function ArtworkCardDetail(objectID){
     // Fetch data from the API
@@ -49,7 +47,7 @@ export default function ArtworkCardDetail(objectID){
                     <strong>Artist:</strong> {data.hasOwnProperty('artistDisplayName') ? data.artistDisplayName : "N/A"} 
                         {data.hasOwnProprty('artistDisplayName') ? "(" : ""}{wiki}{data.hasOwnProprty('artistDisplayName') ? ")" : ""}
                     <br />
-                    
+
                 </Card.Text>
             </Card.Body>
         </Card>
