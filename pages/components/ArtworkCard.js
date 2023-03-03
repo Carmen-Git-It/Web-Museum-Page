@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card';
 import Link from 'next/link';
 import Button from 'react-bootstrap/Button';
 
-export default function ArtworkCart(objectID){
+export default function ArtworkCard(objectID){
     // Fetch data from the API
     const fetcher = (url) => fetch(url).then((res) => res.json());
     const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`, fetcher);
@@ -33,9 +33,8 @@ export default function ArtworkCart(objectID){
                     <strong>Classification:</strong> {data.hasOwnProperty('classification') ? data.classification : "N/A"}
                     <br />
                     <strong>Medium:</strong> {data.hasOwnProperty('medium') ? data.medium : "N/A"}
-                    <br />
-                    <br />
                 </Card.Text>
+                <br/>
                 <Link href={`/artwork/${objectID}`} passHref><Button variant="link"><strong>ID:</strong> {objectID}</Button></Link>
             </Card.Body>
         </Card>
