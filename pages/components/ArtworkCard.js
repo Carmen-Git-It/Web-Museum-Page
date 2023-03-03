@@ -7,8 +7,7 @@ import Button from 'react-bootstrap/Button';
 export default function ArtworkCard(objectID){
     objectID = objectID.objectID;
     // Fetch data from the API
-    const fetcher = (url) => fetch(url).then((res) => res.json());
-    const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`, fetcher);
+    const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
 
     if (error) {
         return (

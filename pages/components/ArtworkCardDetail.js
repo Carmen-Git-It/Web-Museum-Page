@@ -3,9 +3,9 @@ import Error from 'next/error';
 import Card from 'react-bootstrap/Card';
 
 export default function ArtworkCardDetail(objectID){
+    objectID = objectID.objectID;
     // Fetch data from the API
-    const fetcher = (url) => fetch(url).then((res) => res.json());
-    const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`, fetcher);
+    const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
 
     if (error) {
         return (
@@ -23,11 +23,13 @@ export default function ArtworkCardDetail(objectID){
         img = <Card.Img variant="top" src={data.primaryImageSmall}/>
     }
 
-    let artist = <></>;
+    let wiki = <></>;
 
-    if (data.hasOwnProperty('artistDisplayName')) {
-        wiki = <a target="_blank" rel="noreferrer" href={data.artistWikidata_URL}>wiki</a>
+    if (data.hasOwnProperty('artistDisplayName') && data.artistDisplayName.length > 0) {
+        wiki = <a href={data.artistWikidata_URL} target="_blank" rel="noreferrer">wiki</a>
     }
+
+    console.log(data);
 
     return (
         <Card className="bg-light">
@@ -44,8 +46,8 @@ export default function ArtworkCardDetail(objectID){
                     <strong>Medium:</strong> {data.hasOwnProperty('medium') ? data.medium : "N/A"}
                     <br />
                     <br />
-                    <strong>Artist:</strong> {data.hasOwnProperty('artistDisplayName') ? data.artistDisplayName : "N/A"} 
-                        {data.hasOwnProprty('artistDisplayName') ? "(" : ""}{wiki}{data.hasOwnProprty('artistDisplayName') ? ")" : ""}
+                    <strong>Artist:</strong> {data.hasOwnProperty('artistDisplayName') && data.artistDisplayName.length > 0 ? data.artistDisplayName : "N/A"} 
+                        {data.hasOwnProperty('artistDisplayName') && data.artistDisplayName.length > 0 ? "(" : ""}{wiki}{data.hasOwnProperty('artistDisplayName') && data.artistDisplayName.length > 0 ? ")" : ""}
                     <br />
 
                 </Card.Text>
