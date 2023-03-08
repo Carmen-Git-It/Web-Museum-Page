@@ -1,11 +1,29 @@
 import useSWR from 'swr';
 import Error from 'next/error';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import {useAtom} from 'jotai';
+import {favouritesAtom} from '@/store';
+import {useState} from 'react';
 
 export default function ArtworkCardDetail(objectID){
     objectID = objectID.objectID;
+
+    const [favourites, setFavourites] = useAtom(favouritesAtom);
+    const [showAdded, setShowAdded] = useState(favourites.includes(objectID));
+
+    function favouritesClicked() {
+        if(showAdded) {
+            setFavourites(current => current.filter(id => id != objectID));
+            setShowAdded(false);
+        } else {
+            setFavourites(current => [...current, objectID]);
+            setShowAdded(true);
+        }
+    }
+
     // Fetch data from the API
-    const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
+    const {data, error} = useSWR(objectID ? `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}` : null);
 
     if (error) {
         return (
@@ -34,6 +52,7 @@ export default function ArtworkCardDetail(objectID){
     return (
         <Card className="bg-light">
            {img}
+           <Button variant={showAdded ? "primary" : "outline-primary"} onClick={favouritesClicked}>+ Favourite {showAdded ? " (added)" : ""}</Button>
             <Card.Body>
                 <Card.Title>
                     {data.hasOwnProperty('title') ? data.title : "N/A"}

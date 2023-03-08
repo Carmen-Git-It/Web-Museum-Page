@@ -1,6 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Link from 'next/link';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -43,6 +44,11 @@ export default function MainNav() {
                     <Button className="btn btn-secondary my-2 my-sm-0" type="submit">Search</Button>
                 </Form>
                 &nbsp;
+                <Nav>
+                  <NavDropdown title="User Name" id="basic-nav-dropdown">
+                     <Link href="/favourites" passHref legacyBehavior><NavDropdown.Item onClick={()=>{setIsExpanded(false)}}>Favourites</NavDropdown.Item></Link>
+                  </NavDropdown>
+                </Nav>
                </Navbar.Collapse>
             </Container>
          </Navbar>

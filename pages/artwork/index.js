@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Card from 'react-bootstrap/Card';
 import Pagination from 'react-bootstrap/Pagination';
 import ArtworkCard from '../components/ArtworkCard';
-import validObjectIDList from '../public/data/validObjectIDList.json';
+import validObjectIDList from '../../public/data/validObjectIDList.json';
 
 const PER_PAGE = 12;
 
@@ -18,8 +18,13 @@ export default function ArtworkIndex(){
     const router = useRouter();
     let finalQuery = router.asPath.split('?')[1];
 
-    //const fetcher = (url) => fetch(url).then((res) => res.json());
     const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/search?${finalQuery}`);
+
+    if (error) {
+        return (
+            <Error statusCode={404}/>
+        );
+    }
 
     function previousPage(){
         if (page > 1) {
@@ -37,20 +42,15 @@ export default function ArtworkIndex(){
         if (data) {
             let filteredResults = validObjectIDList.objectIDs.filter(x => data.objectIDs?.includes(x));
             let results = [];
-            for (let i = 0; i < filteredResults?.objectIDs?.length; i += PER_PAGE){
-                const chunk = filteredResults?.objectIDs.slice(i, i + PER_PAGE);
+            for (let i = 0; i < filteredResults?.length; i += PER_PAGE){
+                const chunk = filteredResults?.slice(i, i + PER_PAGE);
                 results.push(chunk);
             }
+            console.log(filteredResults);
             setArtworkList(results);
             setPage(1);
         }
     }, [data]);
-
-    if (error) {
-        return (
-            <Error statusCode={404}/>
-        );
-    }
 
     if (artworkList && artworkList.length > 0){   
         let artworks = [];
