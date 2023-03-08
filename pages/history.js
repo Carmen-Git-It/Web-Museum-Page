@@ -38,7 +38,7 @@ export default function History(){
     });
   }
 
-  if (parsedHistory.length == 0) {
+  if (parsedHistory.length === 0) {
     return (
       <Card>
       <Card.Body>

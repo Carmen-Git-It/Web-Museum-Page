@@ -20,12 +20,6 @@ export default function ArtworkIndex(){
 
     const {data, error} = useSWR(`https://collectionapi.metmuseum.org/public/collection/v1/search?${finalQuery}`);
 
-    if (error) {
-        return (
-            <Error statusCode={404}/>
-        );
-    }
-
     function previousPage(){
         if (page > 1) {
             setPage(page - 1);
@@ -51,6 +45,12 @@ export default function ArtworkIndex(){
             setPage(1);
         }
     }, [data]);
+
+    if (error) {
+        return (
+            <Error statusCode={404}/>
+        );
+    }
 
     if (artworkList && artworkList.length > 0){   
         let artworks = [];

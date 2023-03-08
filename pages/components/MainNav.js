@@ -33,8 +33,8 @@ export default function MainNav() {
                <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() =>{setIsExpanded(!isExpanded)}}/>
                <Navbar.Collapse id="basic-navbar-nav">
                   <Nav className="me-auto">
-                     <Nav.Link href="/" as={Link} onClick={()=>{setIsExpanded(false)}}>Home</Nav.Link>
-                     <Nav.Link href="/search" as={Link} onClick={()=>{setIsExpanded(false)}}>Advanced Search</Nav.Link>
+                     <Nav.Link href="/" as={Link} onClick={()=>{setIsExpanded(false)}} active={router.pathname === "/"}>Home</Nav.Link>
+                     <Nav.Link href="/search" as={Link} onClick={()=>{setIsExpanded(false)}} active={router.pathname === "/search"}>Advanced Search</Nav.Link>
                   </Nav>
                   &nbsp;
                   <Form className="d-flex" onSubmit={submitForm}>
@@ -50,8 +50,8 @@ export default function MainNav() {
                 &nbsp;
                 <Nav>
                   <NavDropdown title="User Name" id="basic-nav-dropdown">
-                     <Link href="/favourites" passHref legacyBehavior><NavDropdown.Item onClick={()=>{setIsExpanded(false)}}>Favourites</NavDropdown.Item></Link>
-                     <Link href="/history" passHref legacyBehavior><NavDropdown.Item onClick={()=>{setIsExpanded(false)}}>History</NavDropdown.Item></Link>
+                     <Link href="/favourites" passHref legacyBehavior><NavDropdown.Item onClick={()=>{setIsExpanded(false)}} active={router.pathname === "/favourites"}>Favourites</NavDropdown.Item></Link>
+                     <Link href="/history" passHref legacyBehavior><NavDropdown.Item onClick={()=>{setIsExpanded(false)}} active={router.pathname === "/history"}>History</NavDropdown.Item></Link>
                   </NavDropdown>
                 </Nav>
                </Navbar.Collapse>
