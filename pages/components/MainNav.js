@@ -9,26 +9,29 @@ import {useRouter} from 'next/router'
 
 export default function MainNav() {
 
-    const [searchValue, setSearchValue] = useState('');
-    const router = useRouter();
+   const [searchValue, setSearchValue] = useState('');
+   const [isExpanded, setIsExpanded] = useState(false);
+   const router = useRouter();
 
-    function submitForm(e) {
-        e.preventDefault();
-        const href = `/artwork?title=true&q=${searchValue}`;
-        router.push(href);
-    }
+   function submitForm(e) {
+      setIsExpanded(false);
+      e.preventDefault();
+      const href = `/artwork?title=true&q=${searchValue}`;
+      router.push(href);
+   }
 
    return (
       <div>
-         <Navbar bg="primary" variant="dark" fixed="top" className="fixed-top">
+         <Navbar bg="primary" variant="dark" fixed="top" className="fixed-top" expanded={isExpanded}>
             <Container>
                <Navbar.Brand>Carmen Whitton</Navbar.Brand>
-               <Navbar.Toggle aria-controls="basic-navbar-nav" />
+               <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={() =>{setIsExpanded(!isExpanded)}}/>
                <Navbar.Collapse id="basic-navbar-nav">
                   <Nav className="me-auto">
-                     <Nav.Link href="/" as={Link} >Home</Nav.Link>
-                     <Nav.Link href="/search" as={Link}>Advanced Search</Nav.Link>
+                     <Nav.Link href="/" as={Link} onClick={()=>{setIsExpanded(false)}}>Home</Nav.Link>
+                     <Nav.Link href="/search" as={Link} onClick={()=>{setIsExpanded(false)}}>Advanced Search</Nav.Link>
                   </Nav>
+                  &nbsp;
                   <Form className="d-flex" onSubmit={submitForm}>
                     <Form.Control
                     type="search"
@@ -39,6 +42,7 @@ export default function MainNav() {
                     />
                     <Button className="btn btn-secondary my-2 my-sm-0" type="submit">Search</Button>
                 </Form>
+                &nbsp;
                </Navbar.Collapse>
             </Container>
          </Navbar>
