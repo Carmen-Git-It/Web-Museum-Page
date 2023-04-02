@@ -2,21 +2,32 @@ import { Card, Form, Alert, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { authenticateUser } from '@/lib/authenticate';
 import { useRouter } from 'next/router';
+import {useAtom} from 'jotai';
+import { searchHistoryAtom, favouritesAtom } from '@/store';
+const userData = require("@/libs/userData.js");
 
 export default function Login(props) {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [warning, setWarning] = useState('');
+  const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
+  const [favouritesList, setFavouritesList] = useAtom(favouritesAtom);
 
   const router = useRouter();
+
+  async function updateAtoms(){
+    setFavouritesList(await userData.getFavourites());
+    setSearchHistory(await userData.getHistory());
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
       await authenticateUser(user, password);
+      await updateAtoms();
       router.push('/favourites');
     } catch(err) {
-      setWarning(err.message)
+      setWarning(err.message);
     }
   }
 
