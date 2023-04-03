@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { addToHistory } from '@/lib/userData';
 
 export default function AdvancedSearch(){
     const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
@@ -23,10 +24,10 @@ export default function AdvancedSearch(){
         }
     })
 
-    function submitForm(data, e) {
+    async function submitForm(data, e) {
         e.preventDefault();
         const query = `${data.searchBy}=true&geoLocation=${data.geoLocation}&medium=${data.medium}&isOnView=${data.isOnView}&isHighlight=${data.isHighlight}&q=${data.q}`;
-        setSearchHistory(current => [...current, query]);
+        setSearchHistory(await addToHistory(query));
         router.push(`/artwork?${query}`);
     }
 

@@ -9,6 +9,7 @@ import {useState} from 'react';
 import {useRouter} from 'next/router';
 import {useAtom} from 'jotai';
 import { searchHistoryAtom } from '@/store';
+import { addToHistory } from '@/lib/userData';
 
 export default function MainNav() {
    const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
@@ -17,11 +18,11 @@ export default function MainNav() {
    const [isExpanded, setIsExpanded] = useState(false);
    const router = useRouter();
 
-   function submitForm(e) {
+   async function submitForm(e) {
       setIsExpanded(false);
       e.preventDefault();
       const query = `title=true&q=${searchValue}`;
-      setSearchHistory(current => [...current, query]);
+      setSearchHistory(await addToHistory(query));
       router.push(`/artwork?${query}`);
    }
 
