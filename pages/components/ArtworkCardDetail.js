@@ -4,20 +4,26 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import {useAtom} from 'jotai';
 import {favouritesAtom} from '@/store';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import { addToFavourites, removeFromFavourites } from '@/lib/userData';
 
 export default function ArtworkCardDetail(objectID){
     objectID = objectID.objectID;
 
     const [favourites, setFavourites] = useAtom(favouritesAtom);
-    const [showAdded, setShowAdded] = useState(favourites.includes(objectID));
+    const [showAdded, setShowAdded] = useState(false);
 
-    function favouritesClicked() {
+    useEffect(() => {
+        setShowAdded(favourites?.includes(objectID))
+    }, [favourites]);
+    
+
+    async function favouritesClicked() {
         if(showAdded) {
-            setFavourites(current => current.filter(id => id != objectID));
+            setFavourites(await removeFromFavourites(objectID));
             setShowAdded(false);
         } else {
-            setFavourites(current => [...current, objectID]);
+            setFavourites(await addToFavourites(objectID));
             setShowAdded(true);
         }
     }
