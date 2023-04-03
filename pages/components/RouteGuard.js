@@ -5,7 +5,7 @@ import {useRouter} from 'next/router';
 import { useState, useEffect } from "react";
 import { isAuthenticated } from "@/lib/authenticate";
 
-const PUBLIC_PATHS = ['/register'];
+const PUBLIC_PATHS = ['/register', '/login', '/'];
 
 export default function RouteGuard(props) {
   const [favourites, setFavourites] = useAtom(favouritesAtom);
@@ -15,7 +15,10 @@ export default function RouteGuard(props) {
   const router = useRouter();
 
   useEffect(() => {
-    updateAtoms();
+    if (isAuthenticated()){
+      updateAtoms();
+    }
+
     authCheck(router.pathname);
 
     router.events.on('routeChangeComplete', authCheck);
