@@ -1,7 +1,7 @@
 import '@/styles/bootstrap.min.css';
 import {SWRConfig} from 'swr';
 import Layout from '@/pages/components/Layout';
-import RouteGuard from '@pages/components/RouteGuard';
+import RouteGuard from '@/pages/components/RouteGuard';
 
 export default function App({ Component, pageProps }) {
   return (

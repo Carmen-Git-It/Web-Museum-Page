@@ -1,15 +1,14 @@
 /*********************************************************************************
-*  WEB422 – Assignment 5
-*  I declare that this assignment is my own work in accordance with Seneca Academic Policy.  
-*  No part of this assignment has been copied manually or electronically from any other source
-*  (including web sites) or distributed to other students.
+*  WEB422 – Assignment 06
+*  I declare that this assignment is my own work in accordance with Seneca  Academic Policy.  No part of this
+*  assignment has been copied manually or electronically from any other source (including web sites) or 
+*  distributed to other students.
 * 
-*  Name: Carmen Whitton Student ID: 102710217 Date: 08/03/2023
+*  Name: Carmen Whitton Student ID: 102710217 Date: 2023/04/02
 *
+*  Vercel App (Deployed) Link: _____________________________________________________
 *
-********************************************************************************/
-
-
+********************************************************************************/ 
 
 import Image from 'react-bootstrap/Image';
 import Row from 'react-bootstrap/Row';
