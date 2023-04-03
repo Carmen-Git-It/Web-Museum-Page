@@ -1,31 +1,21 @@
 import { Card, Form, Alert, Button } from 'react-bootstrap';
 import { useState } from 'react';
-import { authenticateUser } from '@/lib/authenticate';
+import { registerUser } from '@/lib/authenticate';
 import { useRouter } from 'next/router';
-import {useAtom} from 'jotai';
-import { searchHistoryAtom, favouritesAtom } from '@/store';
-import {getFavourites, getHistory} from '@/lib/userData';
 
-export default function Login(props) {
+export default function Register(props) {
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [warning, setWarning] = useState('');
-  const [searchHistory, setSearchHistory] = useAtom(searchHistoryAtom);
-  const [favouritesList, setFavouritesList] = useAtom(favouritesAtom);
 
   const router = useRouter();
-
-  async function updateAtoms(){
-    setFavouritesList(await getFavourites());
-    setSearchHistory(await getHistory());
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await authenticateUser(user, password);
-      await updateAtoms();
-      router.push('/favourites');
+      await registerUser(user, password, password2);
+      router.push('/login');
     } catch(err) {
       setWarning(err.message);
     }
@@ -34,7 +24,7 @@ export default function Login(props) {
   return (
     <>
       <Card bg="light">
-        <Card.Body><h2>Login</h2>Enter your login information below:</Card.Body>
+        <Card.Body><h2>Register</h2>Register for a new account:</Card.Body>
       </Card>
       <br />
       { warning && ( <><br /><Alert variant="danger">{warning}</Alert></> )}
@@ -47,7 +37,11 @@ export default function Login(props) {
           <Form.Label>Password:</Form.Label><Form.Control type="password" id="password" name="password" onChange={e => setPassword(e.target.value)}/>
         </Form.Group>
         <br />
-        <Button variant="primary" className="pull-right" type="submit">Login</Button>
+        <Form.Group>
+          <Form.Label>Confirm Password:</Form.Label><Form.Control type="password" id="password2" name="password2" onChange={e => setPassword2(e.target.value)}/>
+        </Form.Group>
+        <br />
+        <Button variant="primary" className="pull-right" type="submit">Register</Button>
       </Form>
     </>
   );
